@@ -12,6 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E8BBB896-6935-4054-AD71-E623B6ACC23D}"
 	ProjectSection(SolutionItems) = preProject
 		Dockerfile = Dockerfile
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Overkill.Websockets", "Overkill.Websockets\Overkill.Websockets.csproj", "{27B7C312-8613-47D2-9F1A-7217755B0A9F}"
