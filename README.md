@@ -39,6 +39,10 @@ Overkill has a built-in concept of positioning - whether that is local environme
 
 Adding a different positioning mechanism or separate GPS driver is as simple as implementing your own IPositioningService and specifying it in the configuration.json file.
 
+### Video Transmission
+
+A built-in implementation of FFmpeg video transmission is included in Overkill. Different implementations can be added by simply inheriting the IVideoTransmissionService, which expects you to launch a process that sends the requested video device output to a remote endpoint specified in configuration.json. This service is also expected to subscribe to the ChangeVideoSource topic for instances where a user may want to see a different view from another capture device.
+
 ### Plugins
 
 Overkill has support for plugin assemblies built on .NET core. By simply specifying the Plugin DLL name in the working directory, Overkill will inject it during its boot procedure and initialize it with the same DI service provider that it uses internally, allowing the Plugin to utilize the services inside of the Core framework, including PubSub.
@@ -60,3 +64,13 @@ A plugin that is responsible for interfacing with an RPLidar A1M8 lidar scanner.
 ### Vehicle.Traxxas
 
 A vehicle driver for a Traxxas R/C car with connected WiFi receiver. This driver subscribes to the Drive topic and transforms it into a TraxxasInputMessage that is then sent to the car's WiFi receiver in a binary payload it expects.
+
+
+
+# Future
+
+### Accessories
+
+An accessory is the concept of an external, physical device that is enclosed within the robot along with the device running the Overkill framework. Overkill should be able to expose a socket interface that allows for these devices to authenticate, become authorized, and begin sending additional data via PubSub to components loaded into the runtime assembly.
+
+For example, a device that has the sole purpose of computing computer vision models and sending raw labeled data to a Plugin that is loaded into Overkill and knows how to consume said information to make driving decisions.
