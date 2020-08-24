@@ -1,0 +1,32 @@
+﻿{
+  "System": {
+    "Module": "Traxxas",
+    "AuthorizationToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywibmFtZSI6IlRyYXh4YXMiLCJuYmYiOjE1OTc4MDQ0MDksImV4cCI6MTU5NzgwODAwOSwiaWF0IjoxNTk3ODA0NDA5fQ.8WpmWb9yyKYlKZ6t7gTqs8ntMvuaBklPVQd3lfDOsx4",
+    "Plugins": []
+  },
+  "VehicleConnection": {
+    "Type": "TCP",
+    "Interface": "Ethernet 2",
+    "Host": "10.10.100.254",
+    "Port": 8899
+  },
+  "Client": {
+    "ConnectionString": "ws://192.168.86.77:9002/overkill",
+    "Interface": "Ethernet 2"
+  },
+  "Positioning": {
+    "Enabled": false,
+    "Type": "QuectelCM",
+    "SerialInput": "/dev/ttyUSB1",
+    "SerialOutput": "/dev/ttyUSB3",
+    "SerialBaudRate": 115200
+  },
+  "Streaming": {
+    "Enabled":  false,
+    "FFmpegExecutablePath": "/usr/bin",
+    "Endpoint": "http://localhost:9001/stream/ingest",
+    "Devices": [
+      "/dev/video0"
+    ]
+  }
+}

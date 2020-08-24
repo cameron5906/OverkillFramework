@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Overkill.Core\Overkill.Core.csproj" />
+    <ProjectReference Include="..\Overkill.Messaging\Overkill.PubSub.csproj" />
+  </ItemGroup>
+
+</Project>
