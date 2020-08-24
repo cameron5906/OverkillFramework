@@ -10,8 +10,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Overkill.Common\Overkill.Common.csproj" />
-    <ProjectReference Include="..\Overkill.Messaging\Overkill.PubSub.csproj" />
     <ProjectReference Include="..\Overkill.Proxies\Overkill.Proxies.csproj" />
+    <ProjectReference Include="..\Overkill.PubSub\Overkill.PubSub.csproj" />
     <ProjectReference Include="..\Overkill.Services\Overkill.Services.csproj" />
   </ItemGroup>
 

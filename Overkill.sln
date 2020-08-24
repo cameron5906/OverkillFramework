@@ -20,7 +20,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Overkill.Core", "Overkill.C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Overkill.Proxies", "Overkill.Proxies\Overkill.Proxies.csproj", "{A1C3E7C7-11A4-4598-85F6-D1578305215C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Overkill.PubSub", "Overkill.Messaging\Overkill.PubSub.csproj", "{E5C9C25D-EF1E-496B-AD5C-3D6B7062C74F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Overkill.PubSub", "Overkill.PubSub\Overkill.PubSub.csproj", "{E5C9C25D-EF1E-496B-AD5C-3D6B7062C74F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Overkill.Services.Tests", "Overkill.Services.Tests\Overkill.Services.Tests.csproj", "{4ABF01A9-00C8-4846-87A0-F618355FAABD}"
 EndProject

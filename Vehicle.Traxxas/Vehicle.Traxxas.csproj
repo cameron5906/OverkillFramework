@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Overkill.Core\Overkill.Core.csproj" />
-    <ProjectReference Include="..\Overkill.Messaging\Overkill.PubSub.csproj" />
+    <ProjectReference Include="..\Overkill.PubSub\Overkill.PubSub.csproj" />
   </ItemGroup>
 
 </Project>
