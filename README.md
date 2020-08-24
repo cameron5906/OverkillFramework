@@ -2,6 +2,8 @@
 
 Overkill is a robotics platform built on top of .NET core. It provides a simple solution to building highly accessible telepresent robots that are controllable through a web browser on a desktop or smartphone.
 
+For the Web service platform that manages Overkill-enabled robots, see https://github.com/cameron5906/OverkillWebService
+
 ### Assumptions
 
 It is assumed that every Overkill robot has the following:
