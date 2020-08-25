@@ -13,24 +13,23 @@ namespace Overkill.Websockets.MessageHandlers
     /// <summary>
     /// Handler for generic Drive messages coming from users
     /// </summary>
-    public class DriveMessageHandler : IWebsocketMessageHandler
+    public class LocomotionMessageHandler : IWebsocketMessageHandler
     {
         IPubSubService pubSub;
 
-        public DriveMessageHandler(IServiceProvider serviceProvider)
+        public LocomotionMessageHandler(IServiceProvider serviceProvider)
         {
             pubSub = serviceProvider.GetRequiredService<IPubSubService>();
         }
 
         public Task<IWebsocketMessage> Handle(IWebsocketMessage msg)
         {
-            var drive = (DriveMessage)msg;
+            var locomotion = (LocomotionMessage)msg;
 
-            pubSub.Dispatch(new DriveInputTopic()
+            pubSub.Dispatch(new LocomotionTopic()
             {
-                Throttle = drive.Throttle,
-                Steering = drive.Steering,
-                Brake = drive.Brake
+                Direction = locomotion.Direction,
+                Speed = locomotion.Speed
             });
 
             return null;
