@@ -34,6 +34,24 @@ namespace Overkill
             Console.WriteLine("Overkill is initializing");
             OverkillConfiguration config = new OverkillConfiguration();
 
+            AppDomain.CurrentDomain.AssemblyResolve += (sender, evt) =>
+            {
+                var assemblyFile = evt.Name.Contains(",") ? evt.Name.Substring(0, evt.Name.IndexOf(",")) : evt.Name;
+
+                assemblyFile += ".dll";
+
+                var absoluteFolder = new FileInfo((new Uri(Assembly.GetExecutingAssembly().CodeBase)).LocalPath).Directory.FullName;
+                var targetPath = Path.Combine(absoluteFolder, assemblyFile);
+
+                try
+                {
+                    return Assembly.LoadFile(targetPath);
+                } catch(Exception)
+                {
+                    return null;
+                }
+            };
+
             var host = new HostBuilder()
                 .ConfigureAppConfiguration(configurationBuilder =>
                 {
@@ -47,6 +65,8 @@ namespace Overkill
                 {
                     Console.WriteLine("Registering services");
                     hostContext.Configuration.Bind(config);
+
+                    Boot.SetupConfiguration(config);
                     Boot.LoadVehicleDriver(services);
 
                     //Core
@@ -95,6 +115,7 @@ namespace Overkill
                     //Websockets
                     services.AddSingleton<IWebsocketService, WebsocketService>();
 
+
                     Console.WriteLine("Done registering services");
                 })
                 .UseConsoleLifetime()
@@ -105,10 +126,10 @@ namespace Overkill
                 var services = serviceScope.ServiceProvider;
 
                 //Do the actual bootup and run/initialize things
-                Boot.Setup(services, config);
+                Boot.SetupServiceProvider(services);
+                Boot.LoadPlugins();
                 Boot.LoadTopics();
                 Boot.LoadConfiguredServices();
-                Boot.LoadPlugins();
                 Boot.Finish();
 
                 Console.ReadKey(true);
