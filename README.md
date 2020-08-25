@@ -53,21 +53,7 @@ Since the Overkill Framework is built to support any type of robot, the "drivers
 
 To create a driver, simply add a project reference to Overkill.Core and Overkill.PubSub, have the main class inherit IVehicle, and implement the Initialization method. An IConnectionInterface is able to be injected into the IVehicle class which represents the communication channel to send instructions to the connected robot.
 
-
-
-# Included Examples
-
-### Plugin.Lidar
-
-A plugin that is responsible for interfacing with an RPLidar A1M8 lidar scanner. This plugin contains an embedded Python script that is written to disk when Overkill boots up and initializes a UDP socket that the Python script sends measurement data to. The plugin then takes these 360 scans and dispatches a topic for components that are interested (and also reference Plugin.Lidar.)
-
-### Vehicle.Traxxas
-
-A vehicle driver for a Traxxas R/C car with connected WiFi receiver. This driver subscribes to the Drive topic and transforms it into a TraxxasInputMessage that is then sent to the car's WiFi receiver in a binary payload it expects.
-
-
-
-# Future
+# Future Features
 
 ### Accessories
 
