@@ -3,6 +3,12 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Company />
+    <PackageProjectUrl></PackageProjectUrl>
+    <RepositoryUrl>https://github.com/cameron5906/OverkillFramework</RepositoryUrl>
+    <Authors>Cameron Cooper</Authors>
+    <Description>Open Source Robotics Framework</Description>
   </PropertyGroup>
 
   <ItemGroup>
