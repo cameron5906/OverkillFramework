@@ -2,6 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Cameron Cooper</Authors>
+    <Company>Cameron Cooper</Company>
+    <Product>OverkillFramework</Product>
+    <Description>Open Source Robotics Framework</Description>
+    <RepositoryUrl>https://github.com/cameron5906/OverkillFramework</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>
