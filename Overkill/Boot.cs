@@ -42,7 +42,7 @@ namespace Overkill
         /// Loads the vehicle driver specified in the configuration or throws an exception if one is not found
         /// </summary>
         /// <param name="services"></param>
-        public static void LoadVehicleDriver(IServiceCollection services)
+        public static void LoadVehicleDriverWithDependencies(IServiceCollection services)
         {
             Console.WriteLine($"Loading vehicle driver: {config.System.Module}...");
 
@@ -62,7 +62,7 @@ namespace Overkill
         /// <summary>
         /// Loads plugins that are specified in the configuration file
         /// </summary>
-        public static void LoadPlugins()
+        public static void LoadPluginsWithDependencies(IServiceCollection services)
         {
             Console.WriteLine("Discovering plugins...");
 
@@ -74,24 +74,12 @@ namespace Overkill
                 throw new BootException("Not all plugins specified in the configuration file were found.");
             }
 
-            pluginAssemblies
-                .Select(x => Assembly.LoadFile(Path.GetFullPath(x)))
-                .SelectMany(x => x.GetTypes())
-                .Where(x => !x.IsInterface && typeof(IPlugin).IsAssignableFrom(x))
-                .Select(x => (IPlugin)Activator.CreateInstance(x, new[] { serviceProvider }))
-                .ToList()
-                .ForEach(plugin =>
-                {
-                    Console.WriteLine($"Initializing plugin: {plugin.GetType().Name}");
-
-                    try
-                    {
-                        plugin.Initialize();
-                    } catch(Exception ex)
-                    {
-                        throw new BootException($"Failed to initialize plugin: {plugin.GetType().Name}", ex);
-                    }
-                });
+            services
+                .ForInterfacesMatching("^IPlugin$")
+                .OfAssemblies(pluginAssemblies
+                    .Select(path => Assembly.LoadFile(Path.GetFullPath(path)))
+                )
+                .AddSingletons();
         }
 
         /// <summary>
@@ -145,6 +133,19 @@ namespace Overkill
         /// </summary>
         public static void Finish()
         {
+            Console.WriteLine("Initializing plugins...");
+            serviceProvider.GetServices<IPlugin>().ToList().ForEach(plugin => {
+                try
+                {
+                    Console.WriteLine($"Initializing plugin: {plugin.GetType().Name}");
+                    plugin.Initialize();
+                }
+                catch (Exception ex)
+                {
+                    throw new BootException($"Failed to initialize plugin: {plugin.GetType().Name}", ex);
+                }
+            });
+
             Console.WriteLine("Connecting to online services...");
             try
             {
