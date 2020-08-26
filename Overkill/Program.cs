@@ -64,7 +64,8 @@ namespace Overkill
                     hostContext.Configuration.Bind(config);
 
                     Boot.SetupConfiguration(config);
-                    Boot.LoadVehicleDriver(services);
+                    Boot.LoadVehicleDriverWithDependencies(services);
+                    Boot.LoadPluginsWithDependencies(services);
 
                     //Core
                     services.AddSingleton<IOverkillConfiguration>(_ => new OverkillConfiguration(config));
@@ -124,7 +125,6 @@ namespace Overkill
 
                 //Do the actual bootup and run/initialize things
                 Boot.SetupServiceProvider(services);
-                Boot.LoadPlugins();
                 Boot.LoadTopics();
                 Boot.LoadConfiguredServices();
                 Boot.Finish();
