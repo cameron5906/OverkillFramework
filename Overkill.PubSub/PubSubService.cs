@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 
 namespace Overkill.PubSub
 {
@@ -15,17 +13,15 @@ namespace Overkill.PubSub
     /// </summary>
     public class PubSubService : IPubSubService
     {
-        private IServiceProvider serviceProvider;
-        private Dictionary<string, List<IPubSubMiddleware>> middlewares;
-        private Dictionary<string, List<IPubSubTopicTransformer>> transformers;
+        private Dictionary<string, List<Func<IPubSubTopic, IPubSubTopic>>> middlewares;
+        private Dictionary<string, List<Func<IPubSubTopic, IPubSubTopic>>> transformers;
         private Dictionary<string, List<Action<IPubSubTopic>>> subscribers;
         private Dictionary<Type, string> topics;
 
-        public PubSubService(IServiceProvider _serviceProvider)
+        public PubSubService()
         {
-            serviceProvider = _serviceProvider;
-            middlewares = new Dictionary<string, List<IPubSubMiddleware>>();
-            transformers = new Dictionary<string, List<IPubSubTopicTransformer>>();
+            middlewares = new Dictionary<string, List<Func<IPubSubTopic, IPubSubTopic>>>();
+            transformers = new Dictionary<string, List<Func<IPubSubTopic, IPubSubTopic>>>();
             subscribers = new Dictionary<string, List<Action<IPubSubTopic>>>();
             topics = new Dictionary<Type, string>();
         }
@@ -53,7 +49,7 @@ namespace Overkill.PubSub
         /// Used to dispatch a Topic to any Core systems, plugins, or vehicle drivers that are interested and subscribed to it
         /// </summary>
         /// <param name="topic">The Topic object</param>
-        public async Task Dispatch(IPubSubTopic topic)
+        public void Dispatch(IPubSubTopic topic)
         {
             var topicName = topic.GetType().Name;
 
@@ -62,10 +58,12 @@ namespace Overkill.PubSub
             {
                 for(var i=0;i<middlewares[topicName].Count;i++)
                 {
-                    var newTopic = await middlewares[topicName][i].Process(topic);
+                    var newTopic = middlewares[topicName][i](topic);
 
-                    //Verify the middleware is simply modifying the topic and not returning some other topic (misuse)
-                    if(newTopic.GetType() == topic.GetType())
+                    if(newTopic == null) //if it's null, take that as the topic being thrown away and return
+                    {
+                        return;
+                    } else if(newTopic.GetType() == topic.GetType()) //Verify the middleware is simply modifying the topic and not returning some other topic (misuse)
                     {
                         topic = newTopic;
                     }
@@ -77,19 +75,11 @@ namespace Overkill.PubSub
             {
                 //Create a list of variants. We will still send our current topic as is, too.
                 var variants = transformers[topicName]
-                    .Select(async(x) => await x.Process(topic))
-                    .Select(x => x.Result)
+                    .Select(transformer => transformer(topic))
                     .ToList();
 
-                //Send to any subscribers who are interested in these transformed topics
-                variants.ForEach(variant =>
-                {
-                    var variantTopicName = variant.GetType().Name;
-                    if(subscribers.ContainsKey(variantTopicName))
-                    {
-                        subscribers[variantTopicName].ForEach(subscriber => subscriber(variant));
-                    }
-                });
+                //Dispatch the transformed topics
+                variants.ForEach(topic => Dispatch(topic));
             }
                 
             //Send the topic to its subscribers
@@ -110,7 +100,6 @@ namespace Overkill.PubSub
 
             if(!subscribers.ContainsKey(topicName))
             {
-                Console.WriteLine($"Subscriber assigned for topic: {topicName}");
                 subscribers.Add(topicName, new List<Action<IPubSubTopic>>());
             }
 
@@ -122,37 +111,35 @@ namespace Overkill.PubSub
         /// reaching subscribers
         /// </summary>
         /// <typeparam name="T">The type of Topic to register the middleware for</typeparam>
-        /// <param name="middlewareType">The Type of the middleware class to register</param>
-        public void Middleware<T>(Type middlewareType)
+        /// <param name="function">The function to use to mutate the specified topic type</param>
+        public void Middleware<T>(Func<T, T> function)
         {
             var topicName = typeof(T).Name;
 
             if(!middlewares.ContainsKey(topicName))
             {
-                Console.WriteLine($"Middleware \"{ middlewareType.Name}\" registered for: {topicName}");
-                middlewares.Add(topicName, new List<IPubSubMiddleware>());
+                middlewares.Add(topicName, new List<Func<IPubSubTopic, IPubSubTopic>>());
             }
 
-            middlewares[topicName].Add((IPubSubMiddleware)Activator.CreateInstance(middlewareType, new[] { serviceProvider }));
+            middlewares[topicName].Add((Func<IPubSubTopic, IPubSubTopic>)((object)function));
         }
 
         /// <summary>
         /// Registers a Topic Transformer to a specific Topic. This is similar to middleware, however it simply transforms a Topic into another and all
         /// variants (and the original Topic) will be dispatched to each of their subscribers. Middleware is run before Transformers.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="transformerType"></param>
-        public void Transform<T>(Type transformerType)
+        /// <typeparam name="T">The topic type to transform</typeparam>
+        /// <param name="function">The function to use to return a different Topic type</param>
+        public void Transform<T>(Func<T, IPubSubTopic> function)
         {
             var topicName = typeof(T).Name;
 
             if (!transformers.ContainsKey(topicName))
             {
-                Console.WriteLine($"Topic transformer \"{ transformerType.Name}\" registered for: {topicName}");
-                transformers.Add(topicName, new List<IPubSubTopicTransformer>());
+                transformers.Add(topicName, new List<Func<IPubSubTopic, IPubSubTopic>>());
             }
 
-            transformers[topicName].Add((IPubSubTopicTransformer)Activator.CreateInstance(transformerType, new[] { serviceProvider }));
+            transformers[topicName].Add((Func<IPubSubTopic, IPubSubTopic>)((object)function));
         }
     }
 }

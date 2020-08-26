@@ -16,7 +16,7 @@ using System.Text;
 
 namespace Overkill
 {
-    public class Boot
+    public static class Boot
     {
         private static IOverkillConfiguration config;
         private static IServiceProvider serviceProvider;

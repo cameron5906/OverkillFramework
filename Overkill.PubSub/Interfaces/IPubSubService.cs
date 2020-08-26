@@ -8,9 +8,9 @@ namespace Overkill.PubSub.Interfaces
     public interface IPubSubService
     {
         void DiscoverTopics();
-        Task Dispatch(IPubSubTopic message);
-        void Middleware<T>(Type middlewareType);
-        void Transform<T>(Type transformerType);
+        void Dispatch(IPubSubTopic message);
+        void Middleware<T>(Func<T, T> function);
+        void Transform<T>(Func<T, IPubSubTopic> function);
         void Subscribe<T>(Action<T> listener);
     }
 }
