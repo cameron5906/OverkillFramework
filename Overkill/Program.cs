@@ -15,14 +15,11 @@ using Overkill.PubSub.Interfaces;
 using Overkill.Services;
 using Overkill.Services.Interfaces.Services;
 using Overkill.Services.Services;
-using Overkill.Util;
 using Overkill.Util.Helpers;
 using Overkill.Websockets;
 using Overkill.Websockets.Interfaces;
 using System;
-using System.Configuration;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 
 namespace Overkill
