@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Overkill.PubSub.Interfaces
 {
-    interface IPubSubMiddleware
+    public interface IPubSubMiddleware
     {
         Task<IPubSubTopic> Process(IPubSubTopic instruction);
     }
