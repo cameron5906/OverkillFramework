@@ -5,3 +5,4 @@ bin
 *.nuspec
 PublishProfiles
 *.csproj.user
+*.bat
