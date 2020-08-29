@@ -137,7 +137,6 @@ namespace Overkill
         /// </summary>
         public static void Finish()
         {
-            Console.WriteLine(serviceProvider.GetRequiredService<IPlugin>());
             Console.WriteLine("Initializing plugins...");
             serviceProvider.GetServices<IPlugin>().ToList().ForEach(plugin => {
                 try
