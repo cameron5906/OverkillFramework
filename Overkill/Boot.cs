@@ -74,12 +74,16 @@ namespace Overkill
                 throw new BootException("Not all plugins specified in the configuration file were found.");
             }
 
-            services
-                .ForInterfacesMatching("^IPlugin$")
-                .OfAssemblies(pluginAssemblies
-                    .Select(path => Assembly.LoadFile(Path.GetFullPath(path)))
-                )
-                .AddSingletons();
+            pluginAssemblies
+                .Select(fileName => Assembly.LoadFile(Path.GetFullPath(fileName)))
+                .SelectMany(assembly => assembly.GetTypes())
+                .Where(type => !type.IsInterface && typeof(IPlugin).IsAssignableFrom(type))
+                .ToList()
+                .ForEach(type =>
+                {
+                    Console.WriteLine($"Adding plugin: {type.Name}");
+                    services.Add(new ServiceDescriptor(typeof(IPlugin), type, ServiceLifetime.Singleton));
+                });
         }
 
         /// <summary>
