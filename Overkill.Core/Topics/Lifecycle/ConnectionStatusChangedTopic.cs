@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Overkill.Core.Topics
+namespace Overkill.Core.Topics.Lifecycle
 {
     /// <summary>
     /// Informs any interested system with the current connection state Overkill has to Overkill Web Services

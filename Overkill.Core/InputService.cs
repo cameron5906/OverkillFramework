@@ -2,6 +2,7 @@
 using Overkill.Common.Exceptions;
 using Overkill.Core.Interfaces;
 using Overkill.Core.Topics;
+using Overkill.Core.Topics.Input;
 using Overkill.PubSub.Interfaces;
 using System;
 using System.Collections.Generic;

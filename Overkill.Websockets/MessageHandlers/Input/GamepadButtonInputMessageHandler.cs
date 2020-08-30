@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Overkill.Common.Enums;
 using Overkill.Core.Topics;
+using Overkill.Core.Topics.Input;
 using Overkill.PubSub.Interfaces;
 using Overkill.Websockets.Interfaces;
 using Overkill.Websockets.Messages.Input;

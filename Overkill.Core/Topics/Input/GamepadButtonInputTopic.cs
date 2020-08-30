@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Overkill.Core.Topics
+namespace Overkill.Core.Topics.Input
 {
     public class GamepadButtonInputTopic : IPubSubTopic
     {
