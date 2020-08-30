@@ -185,19 +185,26 @@ namespace Overkill
                 Console.WriteLine("Link established");
                 serviceProvider.GetRequiredService<IVehicle>().Initialize();
 
+                //Once the vehicle driver has been initialized, send inputs it registers to the web service so manual drive applications will be aware of valid inputs
                 var inputService = serviceProvider.GetRequiredService<IInputService>();
                 if(config.Input.Keyboard != null)
                 {
+                    Console.WriteLine("Sending keyboard input mappings to online service");
                     serviceProvider.GetRequiredService<IWebsocketService>().SendMessage(new KeyboardInputMappingMessage()
                     {
                         Mapping = inputService.GetKeyboardInputs()
                     });
                 }
 
-                serviceProvider.GetRequiredService<IWebsocketService>().SendMessage(new GamepadInputMappingMessage()
+                if(config.Input.Gamepad != null)
                 {
-                    Mapping = inputService.GetGamepadInputs()
-                });
+                    Console.WriteLine("Sending gamepad input mappings to online service");
+
+                    serviceProvider.GetRequiredService<IWebsocketService>().SendMessage(new GamepadInputMappingMessage()
+                    {
+                        Mapping = inputService.GetGamepadInputs()
+                    });
+                }
             } catch(Exception ex)
             {
                 throw new BootException("Failed to connect to the vehicle", ex);
