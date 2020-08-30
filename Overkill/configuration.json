@@ -22,11 +22,25 @@
     "SerialBaudRate": 115200
   },
   "Streaming": {
-    "Enabled":  false,
+    "Enabled": false,
     "FFmpegExecutablePath": "/usr/bin",
     "Endpoint": "http://localhost:9001/stream/ingest",
     "Devices": [
       "/dev/video0"
     ]
+  },
+  "Input": {
+    "Keyboard": {
+      "TurnLeft": "A",
+      "TurnRight": "D",
+      "MoveForward": "W",
+      "MoveBackward": "D",
+      "Horn": "Space"
+    },
+    "Gamepad": {
+      "Steering": "JoystickL",
+      "Throttle": "JoystickR",
+      "Horn": "X"
+    }
   }
 }
