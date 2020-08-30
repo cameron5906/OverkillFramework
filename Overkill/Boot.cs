@@ -6,6 +6,7 @@ using Overkill.Core.Interfaces;
 using Overkill.PubSub.Interfaces;
 using Overkill.Services.Interfaces.Services;
 using Overkill.Websockets.Interfaces;
+using Overkill.Websockets.Messages.Input.Mapping;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -183,6 +184,20 @@ namespace Overkill
 
                 Console.WriteLine("Link established");
                 serviceProvider.GetRequiredService<IVehicle>().Initialize();
+
+                var inputService = serviceProvider.GetRequiredService<IInputService>();
+                if(config.Input.Keyboard != null)
+                {
+                    serviceProvider.GetRequiredService<IWebsocketService>().SendMessage(new KeyboardInputMappingMessage()
+                    {
+                        Mapping = inputService.GetKeyboardInputs()
+                    });
+                }
+
+                serviceProvider.GetRequiredService<IWebsocketService>().SendMessage(new GamepadInputMappingMessage()
+                {
+                    Mapping = inputService.GetGamepadInputs()
+                });
             } catch(Exception ex)
             {
                 throw new BootException("Failed to connect to the vehicle", ex);
