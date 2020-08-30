@@ -9,25 +9,27 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Overkill.Websockets.MessageHandlers
+namespace Overkill.Websockets.MessageHandlers.Input
 {
-    public class GamepadTriggerInputMessageHandler : IWebsocketMessageHandler
+    public class GamepadJoystickInputMessageHandler : IWebsocketMessageHandler
     {
         private IPubSubService pubSub;
 
-        public GamepadTriggerInputMessageHandler(IServiceProvider serviceProvider)
+        public GamepadJoystickInputMessageHandler(IServiceProvider serviceProvider)
         {
             pubSub = serviceProvider.GetService<IPubSubService>();
         }
 
         public Task<IWebsocketMessage> Handle(IWebsocketMessage msg)
         {
-            var triggerInput = (GamepadTriggerInputMessage)msg;
+            var joystickInput = (GamepadJoystickInputMessage)msg;
 
-            pubSub.Dispatch(new GamepadTriggerInputTopic()
+            pubSub.Dispatch(new GamepadJoystickInputTopic()
             {
-                Name = triggerInput.Name,
-                Value = triggerInput.Value
+                Name = joystickInput.Name,
+                IsPressed = joystickInput.IsPressed,
+                X = joystickInput.X,
+                Y = joystickInput.Y
             });
 
             return null;

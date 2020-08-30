@@ -2,34 +2,31 @@
 using Overkill.Core.Topics;
 using Overkill.PubSub.Interfaces;
 using Overkill.Websockets.Interfaces;
-using Overkill.Websockets.Messages;
 using Overkill.Websockets.Messages.Input;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Overkill.Websockets.MessageHandlers
+namespace Overkill.Websockets.MessageHandlers.Input
 {
-    public class GamepadJoystickInputMessageHandler : IWebsocketMessageHandler
+    public class KeyboardInputMessageHandler : IWebsocketMessageHandler
     {
         private IPubSubService pubSub;
 
-        public GamepadJoystickInputMessageHandler(IServiceProvider serviceProvider)
+        public KeyboardInputMessageHandler(IServiceProvider serviceProvider)
         {
             pubSub = serviceProvider.GetService<IPubSubService>();
         }
 
         public Task<IWebsocketMessage> Handle(IWebsocketMessage msg)
         {
-            var joystickInput = (GamepadJoystickInputMessage)msg;
+            var keyboardInput = (KeyboardInputMessage)msg;
 
-            pubSub.Dispatch(new GamepadJoystickInputTopic()
+            pubSub.Dispatch(new KeyboardInputTopic()
             {
-                Name = joystickInput.Name,
-                IsPressed = joystickInput.IsPressed,
-                X = joystickInput.X,
-                Y = joystickInput.Y
+                Name = keyboardInput.Name,
+                IsPressed = keyboardInput.IsPressed
             });
 
             return null;

@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Overkill.Websockets.MessageHandlers
+namespace Overkill.Websockets.MessageHandlers.Input
 {
     public class GamepadButtonInputMessageHandler : IWebsocketMessageHandler
     {
