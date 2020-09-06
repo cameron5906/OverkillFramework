@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Overkill.Common.Configuration;
 using Overkill.Core.Configuration;
 using Overkill.Core.Interfaces;
 using System;
@@ -14,6 +15,7 @@ namespace Overkill.Core
         public PositioningConfiguration Positioning { get; set; }
         public VehicleConnectionConfiguration VehicleConnection { get; set; }
         public StreamingConfiguration Streaming { get; set; }
+        public InputConfiguration Input { get; set; }
 
         public OverkillConfiguration() { }
         public OverkillConfiguration(IOverkillConfiguration config)
@@ -23,6 +25,7 @@ namespace Overkill.Core
             Positioning = config.Positioning;
             VehicleConnection = config.VehicleConnection;
             Streaming = config.Streaming;
+            Input = config.Input;
         }
     }
 }

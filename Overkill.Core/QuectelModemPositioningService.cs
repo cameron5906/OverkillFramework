@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Overkill.Core.Interfaces;
 using Overkill.Core.Topics;
+using Overkill.Core.Topics.Lifecycle;
 using Overkill.Proxies.Interfaces;
 using Overkill.PubSub.Interfaces;
 using System;

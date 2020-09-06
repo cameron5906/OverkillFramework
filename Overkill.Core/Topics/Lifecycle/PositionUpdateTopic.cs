@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Overkill.Core.Topics
+namespace Overkill.Core.Topics.Lifecycle
 {
     /// <summary>
     /// Informs any interested system in GPS location updates

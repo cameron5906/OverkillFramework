@@ -69,6 +69,7 @@ namespace Overkill
 
                     //Core
                     services.AddSingleton<IOverkillConfiguration>(_ => new OverkillConfiguration(config));
+                    services.AddSingleton<IInputService, InputService>();
                     services.AddSingleton<IPubSubService, PubSubService>();
                     services.AddSingleton<IVideoTransmissionService, FFmpegVideoTransmissionService>();
 
